@@ -14,13 +14,28 @@ void loop()
   int Moist2 = 350;
   int Wet = 350;
   int WetAF = 260;
-  int Value = analogRead(0);
   
+  int Value0 = analogRead(0);
+  int Value1 = analogRead(1);
+  int Value2 = analogRead(2);
+  int Value3 = analogRead(3);
+ 
   //time_t t = time(NULL);
   Serial.print(millis());
   Serial.print(": ");
+  
+  Serial.print(Value0);
+  Serial.print(" ");
 
-  if ((Value < Dry1) and (Value > Dry2))
+  Serial.print(Value1);
+  Serial.print(" ");
+
+  Serial.print(Value2);
+  Serial.print(" ");
+
+  Serial.print(Value3);
+
+  /* if ((Value < Dry1) and (Value > Dry2))
   {
     Serial.print("Dry, ");
     Serial.println(Value);
@@ -38,6 +53,7 @@ void loop()
   else
   {
     Serial.print("Out of bounds");
-  }
+  } */
+
   delay(600000);
 }
