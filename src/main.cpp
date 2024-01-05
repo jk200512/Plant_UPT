@@ -8,20 +8,33 @@ void setup()
 
 void loop()
 {
-  int Dry1 = 520;
+  /* int Dry1 = 520;
   int Dry2 = 430;
   int Moist1 = 429;
   int Moist2 = 350;
   int Wet = 350;
-  int WetAF = 260;
+  int WetAF = 260; */
   
   int Value0 = analogRead(0);
   int Value1 = analogRead(1);
   int Value2 = analogRead(2);
-  int Value3 = analogRead(3);
+  int Relay = 8;
+  pinMode(Relay, OUTPUT);
+
+  if (Value0 = 300)
+  {
+  delay(1000);
+  }
+  else 
+  {
+  digitalWrite(Relay, HIGH);  
+  delay(2000);
+  digitalWrite(Relay, LOW);    
+  delay(2000);   
+  } 
+ /* int Value3 = analogRead(3);*/
  
-  //time_t t = time(NULL);
-  Serial.print(millis());
+ /* Serial.print(millis());
   Serial.print(": ");
   
   Serial.print(Value0);
@@ -29,11 +42,12 @@ void loop()
 
   Serial.print(Value1);
   Serial.print(" ");
-
   Serial.print(Value2);
   Serial.print(" ");
 
   Serial.print(Value3);
+
+  Serial.println();*/
 
   /* if ((Value < Dry1) and (Value > Dry2))
   {
@@ -55,5 +69,7 @@ void loop()
     Serial.print("Out of bounds");
   } */
 
-  delay(600000);
+  
+
+  /*delay(600000);*/
 }
