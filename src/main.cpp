@@ -8,6 +8,40 @@ void setup()
 
 void loop()
 {
+  int waiting_time_ms = 2000;
+
+  int level_dry = 500;
+  int level_wet = 330;
+
+  int relay_pin = 8;
+  pinMode(relay_pin, OUTPUT); // TODO: Tõsta setupisse
+
+
+  int sensor_0_val = analogRead(0); // attached to water tube
+  int sensor_1_val = analogRead(1); // "starter"
+  /*int Value2 = analogRead(2);*/
+
+  Serial.print("wait in ms: ");
+  Serial.print(waiting_time_ms);
+  Serial.print("; ");
+  Serial.println(sensor_1_val);
+
+  if (sensor_1_val > level_wet) {
+    digitalWrite(relay_pin, HIGH); // Turn ON
+    delay(waiting_time_ms);
+    digitalWrite(relay_pin, LOW); // Turn OFF
+    delay(5000);
+  } else {
+    digitalWrite(relay_pin, LOW); // Turn OFF
+  }
+  
+//  if (sensor_0_val < level_wet){  
+//    digitalWrite(relay_pin, LOW); // Turn OFF
+//  }
+  
+//  delay(waiting_time_ms);
+}
+
   /* int Dry1 = 520;
   int Dry2 = 430;
   int Moist1 = 429;
@@ -15,23 +49,12 @@ void loop()
   int Wet = 350;
   int WetAF = 260; */
   
-  int Value0 = analogRead(0);
-  int Value1 = analogRead(1);
-  int Value2 = analogRead(2);
-  int Relay = 8;
-  pinMode(Relay, OUTPUT);
 
-  if (Value0 = 300)
-  {
-  delay(1000);
-  }
-  else 
-  {
-  digitalWrite(Relay, HIGH);  
+  /*  digitalWrite(Relay, HIGH);  //Turn off relay
   delay(2000);
-  digitalWrite(Relay, LOW);    
-  delay(2000);   
-  } 
+  digitalWrite(Relay, LOW);    //Turn on relay
+  delay(2000);   */
+ 
  /* int Value3 = analogRead(3);*/
  
  /* Serial.print(millis());
@@ -72,4 +95,7 @@ void loop()
   
 
   /*delay(600000);*/
-}
+
+
+  // Täiendkontroll, et mootor ei tööta kauem kui 5 sec 
+  // Kui viimasest kastmisest on möödas on x min, siis ei kasta
