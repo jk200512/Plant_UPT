@@ -4,32 +4,41 @@
 void setup()
 {
   Serial.begin(9600);
-  pinMode(relay_pin, OUTPUT); 
+  pinMode(8, OUTPUT);
 }
-int waiting_time_ms = 10000; // aeg, mil pump töötab enne välja lülitamist (10 sec)
-int suspend_time = 900000; // aeg, kui kaua arduino ootab enne uut tsükklit (15 min)
-int level_dry = 500; // mulla niiskuse level cap. sensoritele
-int level_wet = 330; // vee märguse nivoo torus oleva andurile
-int relay_pin = 8; // relee signaali pin
-int sensor_0_val = analogRead(0); // attached to water tube
-int sensor_1_val = analogRead(1); // in soil
-int sensor_2_val = analogRead(2); // in soil
-int maxTime = 15000UL; // max aeg, mil pump võib töötada, liidan millis ajale "Unsigned Long" numbrina (ilma UL'ta on tulemused imelikud)
-int previousTime = millis(); // praegune aeg
+
+int WAITING_TIME_ms = 3000;             // aeg, mil pump töötab enne välja lülitamist (3 sec)
+unsigned long SUSPEND_TIME_ms = 900000; // aeg, kui kaua arduino ootab enne uut tsükklit (15 min)
+unsigned long MAX_DELTA_TIME = 4000;    // max aeg, mil pump võib töötada, kahe aja delta
+int LEVEL_DRY = 340;                    // mulla niiskuse level cap. sensoritele 
+int LEVEL_WET = 200;                    // vee märguse nivoo torus oleva andurile
 
 void loop()
 {
-  if ((sensor_1_val >= level_dry) and (sensor_2_val >= level_dry)){
-    digitalWrite(relay_pin, HIGH); // Turn ON
-    while (previousTime < (previousTime + maxTime)) 
+  int sensor_1_val = analogRead(1); // in soil
+  int sensor_2_val = analogRead(2); // in soil
+
+  Serial.print("Niiskus mullas: "); // Prindib lause
+  Serial.print(sensor_1_val);       // Prindib A1 value
+  Serial.print(" ; ");              // Prindib tühiku ja kooloni
+  Serial.println(sensor_2_val);     // Prindib A2 value
+
+  if ((sensor_1_val > LEVEL_DRY) and (sensor_2_val > LEVEL_DRY)) // Kui A1 ja A2 valued on suuremad kui 350, siis täida alumist osa
+  {
+    digitalWrite(8, HIGH);                       // Turn ON
+    int time_0 = millis();                       // Esimene aja küsimine (Esimene aeg)
+    while ((millis() - time_0) < MAX_DELTA_TIME) // While loop töötab kuni praeguse aja ja esimese aja vahe on väiksem kui 15000
     {
-      if (sensor_0_val >= level_wet){
-        delay(waiting_time_ms);
-        digitalWrite(relay_pin, LOW); // Turn OFF
-        break;
+      int sensor_0_val = analogRead(0); // attached to water tube
+      if (sensor_0_val >= LEVEL_WET)    // Kui A0 on võrdne või suurem kui 200, siis täida alumist osa
+      {
+        delay(WAITING_TIME_ms); // Oota 10 sec
+        digitalWrite(8, LOW);   // Turn OFF
+        break;                  // Väljub "While" tsüklist
+      }
+      //Serial.println(sensor_0_val); //(troubleshooting)
     }
-    }
-    digitalWrite(relay_pin, LOW); // Turn OFF (failsafe)
-}
-delay(suspend_time);
+    digitalWrite(8, LOW); // Turn OFF (failsafe)
+  }
+  delay(SUSPEND_TIME_ms); // Oota 15 min
 }
