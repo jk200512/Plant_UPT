@@ -23,16 +23,16 @@ void loop()
   Serial.print(" ; ");              // Prindib tühiku ja kooloni
   Serial.println(sensor_2_val);     // Prindib A2 value
 
-  if ((sensor_1_val > LEVEL_DRY) and (sensor_2_val > LEVEL_DRY)) // Kui A1 ja A2 valued on suuremad kui 350, siis täida alumist osa
+  if ((sensor_1_val > LEVEL_DRY) and (sensor_2_val > LEVEL_DRY)) // Kui A1 ja A2 valued on suuremad kui 340, siis täida alumist osa
   {
     digitalWrite(8, HIGH);                       // Turn ON
-    int time_0 = millis();                       // Esimene aja küsimine (Esimene aeg)
+    unsigned long time_0 = millis();             // Esimene aja küsimine (Esimene aeg)
     while ((millis() - time_0) < MAX_DELTA_TIME) // While loop töötab kuni praeguse aja ja esimese aja vahe on väiksem kui 15000
     {
       int sensor_0_val = analogRead(0); // attached to water tube
       if (sensor_0_val >= LEVEL_WET)    // Kui A0 on võrdne või suurem kui 200, siis täida alumist osa
       {
-        delay(WAITING_TIME_ms); // Oota 10 sec
+        delay(WAITING_TIME_ms); // Oota 3 sec
         digitalWrite(8, LOW);   // Turn OFF
         break;                  // Väljub "While" tsüklist
       }
