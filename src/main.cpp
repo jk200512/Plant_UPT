@@ -18,10 +18,10 @@ void loop()
   int sensor_1_val = analogRead(1); // in soil
   int sensor_2_val = analogRead(2); // in soil
 
-  Serial.print("Niiskus mullas: "); // Prindib lause
-  Serial.print(sensor_1_val);       // Prindib A1 value
-  Serial.print(" ; ");              // Prindib tühiku ja kooloni
-  Serial.println(sensor_2_val);     // Prindib A2 value
+  //Serial.print("Niiskus mullas: "); // Prindib lause
+  //Serial.print(sensor_1_val);       // Prindib A1 value
+  //Serial.print(" ; ");              // Prindib tühiku ja kooloni
+  //Serial.println(sensor_2_val);     // Prindib A2 value
 
   if ((sensor_1_val > LEVEL_DRY) and (sensor_2_val > LEVEL_DRY)) // Kui A1 ja A2 valued on suuremad kui 340, siis täida alumist osa
   {
